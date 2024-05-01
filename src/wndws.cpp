@@ -15,7 +15,6 @@ int main() {
         std::cerr << "Error initializing Winsock" << std::endl;
         return 1;
     }
-
     SSL_library_init();
     OpenSSL_add_all_algorithms();
     SSL_load_error_strings();
@@ -25,7 +24,6 @@ int main() {
     memset(&hints, 0, sizeof(hints));
     hints.ai_family = AF_INET;
     hints.ai_socktype = SOCK_STREAM;
-
     if (getaddrinfo(TARGET_URL, "https", &hints, &result) != 0) {
         std::cerr << "Error resolving hostname" << std::endl;
         WSACleanup();
@@ -87,7 +85,6 @@ int main() {
         WSACleanup();
         return 1;
     }
-
     char buffer[BUFFER_SIZE];
     int bytes_received;
     while ((bytes_received = SSL_read(ssl, buffer, BUFFER_SIZE - 1)) > 0) {
