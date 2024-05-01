@@ -10,6 +10,8 @@
 
 #define BUFFER_SIZE 1024
 
+const char *TARGETURL = "finance.yahoo.com";
+
 int main() {
     SSL_library_init();
     OpenSSL_add_all_algorithms();
@@ -21,7 +23,7 @@ int main() {
     hints.ai_family = AF_INET;
     hints.ai_socktype = SOCK_STREAM;
 
-    if (getaddrinfo("finance.yahoo.com", "https", &hints, &result) != 0) {
+    if (getaddrinfo(TARGETURL, "https", &hints, &result) != 0) {
         std::cerr << "Error resolving hostname" << std::endl;
         return 1;
     }
@@ -63,8 +65,12 @@ int main() {
         close(sockfd);
         return 1;
     }
-    const char *request = "GET / HTTP/1.1\r\nHost: finance.yahoo.com\r\nConnection: close\r\n\r\n";
-    if (SSL_write(ssl, request, strlen(request)) < 0) {
+    std::string http_request = "GET / HTTP/1.1\r\n";
+    http_request += "Host: ";
+    http_request += TARGET_URL;
+    http_request += "\r\n";
+    http_request += "Connection: close\r\n\r\n";
+    if (SSL_write(ssl, http_request.c_str(), http_request.length()) < 0) {
         std::cerr << "Error sending request" << std::endl;
         SSL_shutdown(ssl);
         SSL_free(ssl);
