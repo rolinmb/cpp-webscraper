@@ -67,7 +67,7 @@ int main() {
     }
     std::string http_request = "GET / HTTP/1.1\r\n";
     http_request += "Host: ";
-    http_request += TARGET_URL;
+    http_request += TARGETURL;
     http_request += "\r\n";
     http_request += "Connection: close\r\n\r\n";
     if (SSL_write(ssl, http_request.c_str(), http_request.length()) < 0) {
